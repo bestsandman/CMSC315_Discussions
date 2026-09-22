@@ -31,9 +31,21 @@ def main():
     #    behaves like a hash table.
     # 4. Display the contents of the dictionary.
 
-
     print("\n=== INSERT OPERATIONS ===")
-    print("TODO: Create a dictionary and add multiple key-value pairs.")
+
+    # Dicts work like hash tables under the hood: python hashes the key to calculate
+    # an index, so lookups and inserts run in average O(1) time without scanning a list.
+    reservations = {}
+
+    reservations["RES-101"] = {"name": "Jordan Lee", "party": 2, "time": "6:00 PM"}
+    reservations["RES-102"] = {"name": "Marcus Vance", "party": 4, "time": "6:30 PM"}
+    reservations["RES-103"] = {"name": "Taylor Reed", "party": 6, "time": "7:00 PM"}
+    reservations["RES-104"] = {"name": "Samira Khan", "party": 2, "time": "7:15 PM"}
+    reservations["RES-105"] = {"name": "Chris Ortiz", "party": 3, "time": "8:00 PM"}
+
+    print("Initial reservations:")
+    for k, v in reservations.items():
+        print(f"  {k}: {v['name']} ({v['party']} guests, {v['time']})")
 
     # ===============================
     # TODO (Student): LOOKUP OPERATIONS
@@ -45,7 +57,13 @@ def main():
     # 3. Add meaningful comments to explain how the lookup works.
 
     print("\n=== LOOKUP OPERATIONS ===")
-    print("TODO: Demonstrate successful key lookups.")
+
+    # Direct key lookup hashes the string and jumps straight to that bucket in memory
+    res_1 = reservations["RES-102"]
+    res_2 = reservations["RES-105"]
+
+    print("Lookup RES-102:", res_1["name"], "-", res_1["time"])
+    print("Lookup RES-105:", res_2["name"], "-", res_2["time"])
 
     # ===============================
     # TODO (Student): UPDATE OPERATIONS
@@ -58,7 +76,11 @@ def main():
     #    a new value.
 
     print("\n=== UPDATE OPERATIONS ===")
-    print("TODO: Demonstrate updating an existing key.")
+
+    # Assigning a new value to an existing key just overwrites the reference at that hash slot
+    print("Before update:", reservations["RES-101"])
+    reservations["RES-101"] = {"name": "Jordan Lee", "party": 5, "time": "6:45 PM"}
+    print("After update: ", reservations["RES-101"])
 
     # ===============================
     # TODO (Student): DELETE OPERATIONS
@@ -70,7 +92,12 @@ def main():
     # 3. Use comments to explain what happens when a key is removed.
 
     print("\n=== DELETE OPERATIONS ===")
-    print("TODO: Demonstrate deleting a key-value pair.")
+
+    # del removes the key-value pair and drops the dictionary size by 1
+    print("Bookings count before del:", len(reservations))
+    del reservations["RES-103"]
+    print("Bookings count after del:", len(reservations))
+    print("Is RES-103 still present?", "RES-103" in reservations)
 
     # ===============================
     # TODO (Student): EDGE CASES
@@ -87,8 +114,19 @@ def main():
     # Explain what happens in each case.
 
     print("\n=== EDGE CASES ===")
-    print("TODO: Demonstrate and explain edge cases.")
 
+    # Accessing a missing key with [] throws KeyError, so use .get() with fallback
+    missing_key = "RES-999"
+    found = reservations.get(missing_key, "Not found")
+    print(f"Looking for {missing_key}: {found}")
+
+    # del on a missing key also throws an error, but pop() with None avoids the crash
+    removed = reservations.pop(missing_key, None)
+    print(f"Safely removing {missing_key} (returned: {removed})")
+
+    # Empty dictionary check
+    empty = {}
+    print("Empty dict lookup:", empty.get("RES-101", "No entries"))
 
 
 if __name__ == "__main__":

@@ -14,12 +14,12 @@ This assignment uses Python dictionaries to demonstrate hash table behavior.
 
 ## Requirements
 
-1. Create and populate a dictionary.
-2. Demonstrate lookup operations.
-3. Demonstrate update operations.
-4. Demonstrate delete operations.
-5. Test edge cases.
-6. Create a real-world scenario.
+1. Created and populated a dictionary: Built a simple restaurant reservation tracker with 5 initial bookings using reservation IDs as keys and guest info as values.
+2. Demonstrated lookup operations: Pulled records by ID directly in O(1) time without needing to loop through the whole structure.
+3. Demonstrated update operations: Changed a guest's reservation details by assigning new values directly to an existing key without duplicating entries.
+4. Demonstrated delete operations: Removed an entry using `del`, which lowered the total count and freed up the key.
+5. *ested edge cases* Handled missing lookups with `.get()`, avoided deletion errors using `.pop()` with default fallbacks, and tested behavior on an empty dictionary.
+6. Real world scenario: Focused on a host stand at a busy restaurant needing fast lookups for reservations during a rush.
 
 ## Discussion Board Reflection
 
