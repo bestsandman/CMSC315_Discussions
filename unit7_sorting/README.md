@@ -39,6 +39,6 @@ weren't the exact same size. Once the main `while` loop finished comparing items
 elements, so using `.extend()` on both slices sorted that out cleanly.
 
 ### 3. Algorithm Comparison (Bubble Sort vs. Merge Sort)
-Bubble Sort was simple to write and barely takes any extra memory, but the $O(n^2)$ runtime falls apart fast on bigger 
+Bubble Sort was simple to write and barely takes any extra memory, but the O(n^2) runtime falls apart fast on bigger 
 datasets—especially on the reverse-sorted test. Merge Sort takes extra memory to store the sliced sub-arrays, but the
 consistent O(n log n) speed makes it the clear choice if you're dealing with larger, real-world data.
