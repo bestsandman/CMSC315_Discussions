@@ -147,6 +147,7 @@ def main():
     missing_movie = "Avatar"
     print(f"\n1. Testing missing start node ('{missing_movie}'):")
     result_missing = bfs(movie_graph, missing_movie)
+    print(f"Result: {result_missing} (gracefully handles unknown keys without crashing)")
 
     # Edge Case 2: Disconnected graph / isolated component
     print("\n2. Testing disconnected graph:")
