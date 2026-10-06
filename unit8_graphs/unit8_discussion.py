@@ -87,7 +87,7 @@ def main():
         "Memento": ["Inception", "Shutter Island"],
         "The Martian": ["Interstellar"],
         "Blade Runner": ["The Matrix"],
-        "Shutter Island": ["Memento"]
+        "Shutter Island": ["Memento"],
     }
 
     # Print the graph adjacency list
@@ -147,7 +147,9 @@ def main():
     missing_movie = "Avatar"
     print(f"\n1. Testing missing start node ('{missing_movie}'):")
     result_missing = bfs(movie_graph, missing_movie)
-    print(f"Result: {result_missing} (gracefully handles unknown keys without crashing)")
+    print(
+        f"Result: {result_missing} (gracefully handles unknown keys without crashing)"
+    )
 
     # Edge Case 2: Disconnected graph / isolated component
     print("\n2. Testing disconnected graph:")
@@ -155,11 +157,13 @@ def main():
         "Movie A": ["Movie B"],
         "Movie B": ["Movie A"],
         "Movie C": ["Movie D"],  # Isolated sub-network
-        "Movie D": ["Movie C"]
+        "Movie D": ["Movie C"],
     }
     result_disconnected = bfs(disconnected_graph, "Movie A")
     print(f"Starting at 'Movie A': {result_disconnected}")
-    print("Explanation: BFS only visits reachable nodes within the connected component.")
+    print(
+        "Explanation: BFS only visits reachable nodes within the connected component."
+    )
 
     # Edge Case 3: Empty graph
     print("\n3. Testing empty graph:")
