@@ -32,8 +32,34 @@ def bfs(graph, start):
     - Why neighbors are added to the queue.
     - How BFS differs from depth-first traversal.
     """
+    # Quick sanity check: if the graph is empty or the start node isn't in it, return empty
+    if not graph or start not in graph:
+        return []
 
-    pass
+    # A queue (FIFO - first in, first out) lets us visit nodes layer by layer.
+    # We explore all immediate neighbors first before going deeper.
+    queue = deque([start])
+
+    # Keeping track of visited nodes stops us from getting stuck in infinite loops/cycles
+    visited = set([start])
+    traversal_order = []
+
+    while queue:
+        # Pull the next node from the front of the queue
+        current_node = queue.popleft()
+        traversal_order.append(current_node)
+
+        # Look through all connected neighbors
+        for neighbor in graph.get(current_node, []):
+            if neighbor not in visited:
+                visited.add(neighbor)
+                # We append neighbors to the back of the queue so they wait their turn
+                # until everyone on the current level is processed.
+                # Unlike DFS (which uses a stack/recursion to rush straight down a single path),
+                # BFS fans out evenly across neighbors.
+                queue.append(neighbor)
+
+    return traversal_order
 
 
 def main():
@@ -51,7 +77,22 @@ def main():
     # 5. Use comments to explain what the nodes and edges represent.
 
     print("\n=== GRAPH STRUCTURE ===")
-    print("TODO: Create and display a graph.")
+
+    # Real-world scenario: Streaming service recommendation network
+    # Nodes represent movies/shows, edges represent direct genre/audience similarities
+    movie_graph = {
+        "Inception": ["Interstellar", "The Matrix", "Memento"],
+        "Interstellar": ["Inception", "The Martian"],
+        "The Matrix": ["Inception", "Blade Runner"],
+        "Memento": ["Inception", "Shutter Island"],
+        "The Martian": ["Interstellar"],
+        "Blade Runner": ["The Matrix"],
+        "Shutter Island": ["Memento"]
+    }
+
+    # Print the graph adjacency list
+    for movie, recommendations in movie_graph.items():
+        print(f"{movie} -> {', '.join(recommendations)}")
 
     # ===============================
     # TODO (Student): BFS TRAVERSAL
@@ -66,7 +107,24 @@ def main():
     #    and demonstrate the updated traversal.
 
     print("\n=== BFS TRAVERSAL ===")
-    print("TODO: Perform and explain BFS traversal.")
+    start_movie = "Inception"
+    print(f"Starting BFS from '{start_movie}'...")
+
+    # Level 0: Inception
+    # Level 1: Interstellar, The Matrix, Memento (direct neighbors)
+    # Level 2: The Martian, Blade Runner, Shutter Island (neighbors of neighbors)
+    order = bfs(movie_graph, start_movie)
+    print("Traversal Order (Level by Level):")
+    print(" -> ".join(order))
+
+    # Adding a new movie node and connecting it to The Martian
+    print("\nAdding 'Arrival' connected to 'The Martian' and re-running BFS...")
+    movie_graph["Arrival"] = ["The Martian"]
+    movie_graph["The Martian"].append("Arrival")
+
+    updated_order = bfs(movie_graph, start_movie)
+    print("Updated Traversal Order:")
+    print(" -> ".join(updated_order))
 
     # ===============================
     # TODO (Student): EDGE CASES
@@ -84,8 +142,29 @@ def main():
     # Explain what happens in each case.
 
     print("\n=== EDGE CASE TESTS ===")
-    print("TODO: Demonstrate and explain edge cases.")
 
+    # Edge Case 1: Start node doesn't exist in graph
+    missing_movie = "Avatar"
+    print(f"\n1. Testing missing start node ('{missing_movie}'):")
+    result_missing = bfs(movie_graph, missing_movie)
+    print(f"Result: {result_missing} (gracefully handles unknown keys without crashing)")
+
+    # Edge Case 2: Disconnected graph / isolated component
+    print("\n2. Testing disconnected graph:")
+    disconnected_graph = {
+        "Movie A": ["Movie B"],
+        "Movie B": ["Movie A"],
+        "Movie C": ["Movie D"],  # Isolated sub-network
+        "Movie D": ["Movie C"]
+    }
+    result_disconnected = bfs(disconnected_graph, "Movie A")
+    print(f"Starting at 'Movie A': {result_disconnected}")
+    print("Explanation: BFS only visits reachable nodes within the connected component.")
+
+    # Edge Case 3: Empty graph
+    print("\n3. Testing empty graph:")
+    empty_result = bfs({}, "Inception")
+    print(f"Result on empty dictionary: {empty_result}")
 
 
 if __name__ == "__main__":
